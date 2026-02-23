@@ -21,63 +21,52 @@ class ThemeManager:
             "bg_app": "#0b0b0f",
             "bg_sidebar": "#07070a",
             "bg_card": "#121218",
-            "bg_input": "#000000",
-            "border": "#272730",
-            "accent": "#ff0048",
-            "accent_hover": "#cc003a",
+            "bg_input": "#1a1a24",
+            "border": "#2a2a35",
+            "accent": "#ef4444",
+            "accent_hover": "#dc2626",
             "text_main": "#ffffff",
-            "text_muted": "#8a8a98"
+            "text_muted": "#94a3b8"
         },
         "Purple": {
-            "bg_app": "#050505",
-            "bg_sidebar": "#030303",
-            "bg_card": "#0f0f12",
-            "bg_input": "#08080a",
-            "border": "#1f1f26",
-            "accent": "#6d28d9",
-            "accent_hover": "#5b21b6",
+            "bg_app": "#0b0b0f",
+            "bg_sidebar": "#07070a",
+            "bg_card": "#121218",
+            "bg_input": "#1a1a24",
+            "border": "#2a2a35",
+            "accent": "#8b5cf6",
+            "accent_hover": "#7c3aed",
             "text_main": "#ffffff",
-            "text_muted": "#8b8b99"
-        },
-        "Matrix Green": {
-            "bg_app": "#020804",
-            "bg_sidebar": "#010402",
-            "bg_card": "#041208",
-            "bg_input": "#000000",
-            "border": "#0d3319",
-            "accent": "#00ff41",
-            "accent_hover": "#00cc33",
-            "text_main": "#ffffff",
-            "text_muted": "#4a7c59"
+            "text_muted": "#94a3b8"
         },
         "Cyberpunk Cyan": {
-            "bg_app": "#050a12",
-            "bg_sidebar": "#02050a",
-            "bg_card": "#091221",
-            "bg_input": "#000000",
-            "border": "#1a365d",
+            "bg_app": "#0b0b0f",
+            "bg_sidebar": "#07070a",
+            "bg_card": "#121218",
+            "bg_input": "#1a1a24",
+            "border": "#2a2a35",
             "accent": "#00f0ff",
             "accent_hover": "#00c3cc",
             "text_main": "#ffffff",
-            "text_muted": "#60a5fa"
+            "text_muted": "#94a3b8"
         },
         "Solar Yellow": {
-            "bg_app": "#0f0c05",
-            "bg_sidebar": "#080602",
-            "bg_card": "#1c160a",
-            "bg_input": "#000000",
-            "border": "#3d2f11",
+            "bg_app": "#0b0b0f",
+            "bg_sidebar": "#07070a",
+            "bg_card": "#121218",
+            "bg_input": "#1a1a24",
+            "border": "#2a2a35",
             "accent": "#facc15",
             "accent_hover": "#eab308",
             "text_main": "#ffffff",
-            "text_muted": "#a16207"
+            "text_muted": "#94a3b8"
         },
         "Midnight Blue": {
-            "bg_app": "#020617",
-            "bg_sidebar": "#01030d",
-            "bg_card": "#0f172a",
-            "bg_input": "#000000",
-            "border": "#1e293b",
+            "bg_app": "#0b0b0f",
+            "bg_sidebar": "#07070a",
+            "bg_card": "#121218",
+            "bg_input": "#1a1a24",
+            "border": "#2a2a35",
             "accent": "#3b82f6",
             "accent_hover": "#2563eb",
             "text_main": "#ffffff",
@@ -118,42 +107,34 @@ class ThemeManager:
 
 class NeonToggleSwitch(ctk.CTkFrame):
     def __init__(self, master, command=None, **kwargs):
-        super().__init__(master, height=40, width=180, corner_radius=20, fg_color="transparent", **kwargs)
+        super().__init__(master, height=44, width=170, corner_radius=22, border_width=2, **kwargs)
         self.command = command
         self.is_on = False
         self.pack_propagate(False)
         self.grid_propagate(False)
 
-        self.canvas = ctk.CTkCanvas(self, width=180, height=40, bg=ThemeManager.get_color("bg_card"), highlightthickness=0)
-        self.canvas.pack(fill="both", expand=True)
+        self.circle = ctk.CTkFrame(self, width=28, height=28, corner_radius=14)
+        self.circle.place(x=8, y=6)
         
-        # Desenha a pílula de fundo
-        self.bg_rect = self._round_rectangle(2, 2, 178, 38, radius=18, fill=ThemeManager.get_color("bg_card"), outline=ThemeManager.get_color("border"))
-        
-        # Desenha o círculo interno
-        self.circle = self.canvas.create_oval(6, 6, 34, 34, fill=ThemeManager.get_color("text_muted"), outline="")
-        self.text_id = self.canvas.create_text(90, 20, text="ENGINE OFF", fill=ThemeManager.get_color("text_muted"), font=("Segoe UI", 12, "bold"))
+        self.text_lbl = ctk.CTkLabel(self, text="ENGINE OFF", font=("Segoe UI", 13, "bold"))
+        self.text_lbl.place(x=48, y=8)
 
-        self.canvas.bind("<Button-1>", self.toggle)
+        self.bind("<Button-1>", self.toggle)
+        self.circle.bind("<Button-1>", self.toggle)
+        self.text_lbl.bind("<Button-1>", self.toggle)
+        
         ThemeManager.subscribe(self.update_theme)
 
-    def _round_rectangle(self, x1, y1, x2, y2, radius=25, **kwargs):
-        points = [x1+radius, y1, x1+radius, y1, x2-radius, y1, x2-radius, y1, x2, y1, x2, y1+radius,
-                  x2, y1+radius, x2, y2-radius, x2, y2-radius, x2, y2, x2-radius, y2, x2-radius, y2,
-                  x1+radius, y2, x1+radius, y2, x1, y2, x1, y2-radius, x1, y2-radius, x1, y1+radius,
-                  x1, y1+radius, x1, y1]
-        return self.canvas.create_polygon(points, **kwargs, smooth=True)
-
     def update_theme(self):
-        self.canvas.configure(bg=ThemeManager.get_color("bg_app"))
+        self.configure(bg_color=ThemeManager.get_color("bg_app"))
         if self.is_on:
-            self.canvas.itemconfig(self.bg_rect, outline=ThemeManager.get_color("border"), fill=ThemeManager.get_color("bg_input"))
-            self.canvas.itemconfig(self.circle, fill=ThemeManager.get_color("accent"))
-            self.canvas.itemconfig(self.text_id, fill=ThemeManager.get_color("text_main"))
+            self.configure(fg_color=ThemeManager.get_color("bg_input"), border_color=ThemeManager.get_color("border"))
+            self.circle.configure(fg_color=ThemeManager.get_color("accent"))
+            self.text_lbl.configure(text_color=ThemeManager.get_color("text_main"))
         else:
-            self.canvas.itemconfig(self.bg_rect, outline=ThemeManager.get_color("border"), fill=ThemeManager.get_color("bg_card"))
-            self.canvas.itemconfig(self.circle, fill=ThemeManager.get_color("text_muted"))
-            self.canvas.itemconfig(self.text_id, fill=ThemeManager.get_color("text_muted"))
+            self.configure(fg_color=ThemeManager.get_color("bg_card"), border_color=ThemeManager.get_color("border"))
+            self.circle.configure(fg_color=ThemeManager.get_color("text_muted"))
+            self.text_lbl.configure(text_color=ThemeManager.get_color("text_muted"))
 
     def toggle(self, event=None):
         if self.command: self.command()
@@ -163,57 +144,15 @@ class NeonToggleSwitch(ctk.CTkFrame):
         self._animate()
 
     def _animate(self):
-        # Para animações robustas no Tkinter, cancelamos a anterior se houver
-        if hasattr(self, '_anim_id') and self._anim_id:
-            try: self.after_cancel(self._anim_id)
-            except: pass
-            
-        texto = "ENGINE ON" if self.is_on else "ENGINE OFF"
-        self.canvas.itemconfig(self.text_id, text=texto)
+        self.text_lbl.configure(text="ENGINE ON" if self.is_on else "ENGINE OFF")
         self.update_theme()
         
-        target_circle_x = 146 if self.is_on else 6
-        target_text_x = 75 if self.is_on else 105
+        target_circle_x = 132 if self.is_on else 8
+        target_text_x = 24 if self.is_on else 48
         
-        # Pega as coordenadas atuais confiantemente
-        try:
-            cur_circle = self.canvas.coords(self.circle)[0]
-            cur_text = self.canvas.coords(self.text_id)[0]
-        except:
-            cur_circle = 6 if self.is_on else 146
-            cur_text = 105 if self.is_on else 75
-        
-        import time
-        self._anim_start_time = time.time()
-        self._anim_duration = 0.25 # iOS-like speed (250ms)
-        self._anim_time_step(cur_circle, target_circle_x, cur_text, target_text_x)
-
-    def _anim_time_step(self, cx_start, cx_end, tx_start, tx_end):
-        import time
-        now = time.time()
-        elapsed = now - self._anim_start_time
-        progress = elapsed / self._anim_duration
-        
-        if progress >= 1.0:
-            try:
-                self.canvas.coords(self.circle, cx_end, 6, cx_end+28, 34)
-                self.canvas.coords(self.text_id, tx_end, 20)
-            except: pass
-            return
-
-        # iOS-like easing (Quartic Ease Out) for very smooth start and gentle stop
-        ease = 1 - pow(1 - progress, 4)
-        
-        cur_cx = cx_start + (cx_end - cx_start) * ease
-        cur_tx = tx_start + (tx_end - tx_start) * ease
-        
-        try:
-            self.canvas.coords(self.circle, cur_cx, 6, cur_cx+28, 34)
-            self.canvas.coords(self.text_id, cur_tx, 20)
-            self.canvas.update_idletasks()
-        except: pass
-        
-        self._anim_id = self.after(8, lambda: self._anim_time_step(cx_start, cx_end, tx_start, tx_end))
+        # Simple immediate layout jump to avoid GUI thread locking issues for now (Matches pure CSS web feel)
+        self.circle.place(x=target_circle_x, y=6)
+        self.text_lbl.place(x=target_text_x, y=8)
 
 
 class InteractiveCard(ctk.CTkFrame):
@@ -224,7 +163,7 @@ class InteractiveCard(ctk.CTkFrame):
         self.pack_propagate(False)
         self.grid_propagate(False)
 
-        self.title_lbl = ctk.CTkLabel(self, text=title, font=("Segoe UI", 14, "bold"))
+        self.title_lbl = ctk.CTkLabel(self, text=title, font=("Segoe UI", 15, "bold"))
         self.title_lbl.pack(pady=(20, 5))
 
         self.badge = ctk.CTkLabel(self, text=shortcut if shortcut else "Sem Atalho", corner_radius=4, height=20, font=("Segoe UI", 10, "bold"))
@@ -251,10 +190,16 @@ class InteractiveCard(ctk.CTkFrame):
     def update_theme(self):
         self.configure(fg_color=ThemeManager.get_color("bg_card"), border_color=ThemeManager.get_color("border"))
         self.title_lbl.configure(text_color=ThemeManager.get_color("text_main"))
-        self.badge.configure(fg_color=ThemeManager.get_color("bg_input"), text_color=ThemeManager.get_color("text_muted"))
         
-        self.btn_play.configure(fg_color=ThemeManager.get_color("accent"), hover_color=ThemeManager.get_color("accent_hover"), text_color="#ffffff")
-        self.btn_bind.configure(fg_color=ThemeManager.get_color("border"), hover_color=ThemeManager.get_color("bg_input"), text_color=ThemeManager.get_color("text_main"))
+        # Badge color logic mimicking Web UI
+        has_bind = (self.badge.cget("text").lower() != "sem atalho")
+        self.badge.configure(
+            fg_color="transparent", 
+            text_color=ThemeManager.get_color("accent") if has_bind else ThemeManager.get_color("accent_hover")
+        )
+        
+        self.btn_play.configure(fg_color=ThemeManager.get_color("bg_input"), hover_color=ThemeManager.get_color("border"), text_color=ThemeManager.get_color("accent"))
+        self.btn_bind.configure(fg_color="transparent", border_color=ThemeManager.get_color("border"), border_width=1, hover_color=ThemeManager.get_color("bg_input"), text_color=ThemeManager.get_color("text_main"))
 
     def on_enter(self, event):
         self.configure(border_color=ThemeManager.get_color("accent"))
@@ -478,8 +423,8 @@ class SoundPadApp(ctk.CTk):
         self.sidebar.grid_propagate(False)
 
         # Logo Icon top
-        logo_lbl = ctk.CTkLabel(self.sidebar, text=" SoundPad", font=("Segoe UI", 18, "bold"), image=self.get_icon("logo", "#ffffff", size=(30, 30)), compound="left", text_color="#ffffff")
-        logo_lbl.pack(pady=(20, 40), padx=20, anchor="w")
+        logo_lbl = ctk.CTkLabel(self.sidebar, text=" SoundPad", font=("Segoe UI", 20, "bold"), image=self.get_icon("logo", "#ffffff", size=(32, 32)), compound="left", text_color="#ffffff")
+        logo_lbl.pack(pady=(30, 40), padx=25, anchor="w")
 
         self.nav_btns = []
         self.btn_home = self.create_nav_btn("home", "Dashboard", self.show_home)
@@ -499,10 +444,10 @@ class SoundPadApp(ctk.CTk):
         frame.grid_propagate(False)
 
         indicator = ctk.CTkFrame(frame, width=4, corner_radius=2, fg_color="transparent")
-        indicator.pack(side="left", fill="y", pady=5, padx=2)
+        indicator.pack(side="left", fill="y", pady=8, padx=0)
 
-        icon_lbl = ctk.CTkLabel(frame, text=f"  {text}", font=("Segoe UI", 14, "bold"), image=self.get_icon(icon_name, "#8a8a98", size=(24,24)), compound="left", text_color="#8a8a98")
-        icon_lbl.pack(side="left", padx=10)
+        icon_lbl = ctk.CTkLabel(frame, text=f"   {text}", font=("Segoe UI", 15, "bold"), image=self.get_icon(icon_name, "#8a8a98", size=(22,22)), compound="left", text_color="#8a8a98")
+        icon_lbl.pack(side="left", padx=25)
 
         def on_click(e): command()
         
@@ -821,38 +766,44 @@ class SoundPadApp(ctk.CTk):
         t1 = ctk.CTkLabel(content, text="Hardware & Mixagem", font=("Segoe UI", 24, "bold"), text_color=ThemeManager.get_color("text_main"))
         t1.pack(anchor="w", pady=(0, 20))
 
-        frame = ctk.CTkFrame(content, corner_radius=12)
-        frame.pack(fill="both", expand=True)
-        ThemeManager.subscribe(lambda: frame.configure(fg_color=ThemeManager.get_color("bg_card"), border_color=ThemeManager.get_color("border"), border_width=1))
+        # Coluna Esq (Cartão 1)
+        col1 = ctk.CTkFrame(content, corner_radius=12)
+        col1.pack(side="left", fill="both", expand=True, padx=(0, 20))
+        ThemeManager.subscribe(lambda: col1.configure(fg_color=ThemeManager.get_color("bg_card"), border_color=ThemeManager.get_color("border"), border_width=1))
+        
+        inner_col1 = ctk.CTkFrame(col1, fg_color="transparent")
+        inner_col1.pack(fill="both", expand=True, padx=30, pady=30)
 
-        # Coluna Esq
-        col1 = ctk.CTkFrame(frame, fg_color="transparent")
-        col1.pack(side="left", fill="both", expand=True, padx=40, pady=30)
-        t2 = ctk.CTkLabel(col1, text="Dispositivos", font=("Segoe UI", 16, "bold"), text_color=ThemeManager.get_color("accent"))
+        t2 = ctk.CTkLabel(inner_col1, text="Dispositivos", font=("Segoe UI", 16, "bold"), text_color=ThemeManager.get_color("accent"))
         t2.pack(anchor="w", pady=(0,20))
         
-        self.combo_mic = self.create_combo(col1, "Microfone", list(self.devices['input'].keys()))
-        self.combo_cable = self.create_combo(col1, "Cabo Virtual", list(self.devices['output'].keys()))
-        self.combo_fone = self.create_combo(col1, "Seu Fone", list(self.devices['output'].keys()))
+        self.combo_mic = self.create_combo(inner_col1, "Microfone Principal (Input):", list(self.devices['input'].keys()))
+        self.combo_cable = self.create_combo(inner_col1, "Cabo Virtual (Output para Discord):", list(self.devices['output'].keys()))
+        self.combo_fone = self.create_combo(inner_col1, "Seu Fone de Ouvido (Retorno):", list(self.devices['output'].keys()))
         self.auto_select_devices_ui()
 
-        # Coluna Dir
-        col2 = ctk.CTkFrame(frame, fg_color="transparent")
-        col2.pack(side="left", fill="both", expand=True, padx=40, pady=30)
-        t3 = ctk.CTkLabel(col2, text="Mixagem", font=("Segoe UI", 16, "bold"), text_color=ThemeManager.get_color("accent"))
+        # Coluna Dir (Cartão 2)
+        col2 = ctk.CTkFrame(content, corner_radius=12)
+        col2.pack(side="left", fill="both", expand=True)
+        ThemeManager.subscribe(lambda: col2.configure(fg_color=ThemeManager.get_color("bg_card"), border_color=ThemeManager.get_color("border"), border_width=1))
+
+        inner_col2 = ctk.CTkFrame(col2, fg_color="transparent")
+        inner_col2.pack(fill="both", expand=True, padx=30, pady=30)
+
+        t3 = ctk.CTkLabel(inner_col2, text="Mixagem", font=("Segoe UI", 16, "bold"), text_color=ThemeManager.get_color("accent"))
         t3.pack(anchor="w", pady=(0,20))
         ThemeManager.subscribe(lambda: t3.configure(text_color=ThemeManager.get_color("accent")))
 
-        self.create_slider(col2, "Sua Voz (Boost)", 0, 2, self.vol_mic, lambda v: setattr(self, 'vol_mic', v))
-        self.create_slider(col2, "Música (Para os outros)", 0, 1, self.vol_music_discord, lambda v: setattr(self, 'vol_music_discord', v))
-        self.create_slider(col2, "Música (Para você)", 0, 1, self.vol_music_me, lambda v: setattr(self, 'vol_music_me', v))
+        self.create_slider(inner_col2, "Sua Voz (Boost)", 0, 2, self.vol_mic, lambda v: setattr(self, 'vol_mic', v))
+        self.create_slider(inner_col2, "Música (Para os outros)", 0, 1, self.vol_music_discord, lambda v: setattr(self, 'vol_music_discord', v))
+        self.create_slider(inner_col2, "Música (Para você)", 0, 1, self.vol_music_me, lambda v: setattr(self, 'vol_music_me', v))
 
-        ctk.CTkLabel(col2, text="Kill Switch (Parar Tudo):").pack(anchor="w", pady=(20, 5))
-        ThemeManager.subscribe(lambda: col2.winfo_children()[-1].configure(text_color=ThemeManager.get_color("text_muted")))
+        ctk.CTkLabel(inner_col2, text="Kill Switch (Parar Tudo):", font=("Segoe UI", 13)).pack(anchor="w", pady=(20, 5))
+        ThemeManager.subscribe(lambda: inner_col2.winfo_children()[-1].configure(text_color=ThemeManager.get_color("text_muted")))
         
-        btn_kill = ctk.CTkButton(col2, text=self.config_data["kill_switch"].upper(), width=100, height=35)
+        btn_kill = ctk.CTkButton(inner_col2, text=self.config_data["kill_switch"].upper(), width=100, height=35)
         btn_kill.pack(anchor="w")
-        ThemeManager.subscribe(lambda: btn_kill.configure(fg_color=ThemeManager.get_color("bg_input"), border_color=ThemeManager.get_color("border"), border_width=1, text_color=ThemeManager.get_color("accent")))
+        ThemeManager.subscribe(lambda: btn_kill.configure(fg_color=ThemeManager.get_color("bg_input"), border_color=ThemeManager.get_color("border"), border_width=1, text_color=ThemeManager.get_color("accent"), hover_color=ThemeManager.get_color("bg_card")))
         btn_kill.configure(command=lambda: self.change_kill_switch(btn_kill))
         
         ThemeManager.notify_all()
@@ -872,21 +823,21 @@ class SoundPadApp(ctk.CTk):
 
     def create_combo(self, parent, title, values):
         lbl = ctk.CTkLabel(parent, text=title, font=("Segoe UI", 13, "bold"))
-        lbl.pack(anchor="w", pady=(10,5))
-        c = ctk.CTkOptionMenu(parent, values=values, width=300, height=40, corner_radius=8)
+        lbl.pack(anchor="w", pady=(5,5))
+        c = ctk.CTkOptionMenu(parent, values=values, width=320, height=38, corner_radius=6, dynamic_resizing=False, font=("Segoe UI", 12))
         if values: c.set(values[0])
-        c.pack(anchor="w")
-        ThemeManager.subscribe(lambda: lbl.configure(text_color=ThemeManager.get_color("text_muted")))
-        ThemeManager.subscribe(lambda: c.configure(fg_color=ThemeManager.get_color("bg_input"), border_color=ThemeManager.get_color("border"), button_color=ThemeManager.get_color("bg_input"), button_hover_color=ThemeManager.get_color("border"), text_color=ThemeManager.get_color("text_main")))
+        c.pack(anchor="w", pady=(0, 15))
+        ThemeManager.subscribe(lambda: lbl.configure(text_color=ThemeManager.get_color("text_main")))
+        ThemeManager.subscribe(lambda: c.configure(fg_color=ThemeManager.get_color("bg_input"), button_color=ThemeManager.get_color("bg_input"), button_hover_color=ThemeManager.get_color("bg_card"), text_color=ThemeManager.get_color("text_muted")))
         return c
 
     def create_slider(self, parent, title, min_v, max_v, default, cmd):
-        lbl = ctk.CTkLabel(parent, text=title)
-        lbl.pack(anchor="w", pady=(10,0))
-        s = ctk.CTkSlider(parent, width=300, from_=min_v, to=max_v)
+        lbl = ctk.CTkLabel(parent, text=title, font=("Segoe UI", 13, "bold"))
+        lbl.pack(anchor="w", pady=(5,0))
+        s = ctk.CTkSlider(parent, width=320, height=14, from_=min_v, to=max_v)
         s.set(default); s.configure(command=cmd); s.pack(anchor="w", pady=(5, 10))
-        ThemeManager.subscribe(lambda: lbl.configure(text_color=ThemeManager.get_color("text_muted")))
-        ThemeManager.subscribe(lambda: s.configure(progress_color=ThemeManager.get_color("accent"), button_color=ThemeManager.get_color("text_main"), button_hover_color=ThemeManager.get_color("text_main")))
+        ThemeManager.subscribe(lambda: lbl.configure(text_color=ThemeManager.get_color("text_main")))
+        ThemeManager.subscribe(lambda: s.configure(progress_color=ThemeManager.get_color("accent"), button_color=ThemeManager.get_color("text_muted"), button_hover_color=ThemeManager.get_color("text_main")))
 
     # --- CREDITOS ---
     def show_credits(self):
