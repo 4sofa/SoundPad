@@ -1,0 +1,37 @@
+# --- Python Padrão ---
+__pycache__/
+*.pyc
+
+# --- Ambientes Virtuais ---
+venv/
+.venv/
+env/
+
+# --- PyInstaller (Compilação) ---
+# Ignora as pastas geradas pelo build
+build/
+dist/
+# Ignora arquivos temporários de spec (se quiser manter a receita de build, remova a linha abaixo)
+*.spec
+# Ignora logs de aviso do PyInstaller
+warn-*.txt
+xref-*.html
+
+# --- Configurações Locais ---
+# Não suba seu config.json pois ele contem configurações do SEU pc (mic, devices)
+config.json
+
+# --- Logs e Debug ---
+debug_output.txt
+*.log
+
+# --- Arquivos de Mídia (Sons) ---
+# Evita subir arquivos pesados de áudio para o GitHub
+*.mp3
+*.wav
+*.m4a
+
+# --- Arquivos específicos que vi na sua imagem ---
+localpycs/
+VerificarID.py  # Parece ser script de teste/temp
+app_soundpad copy 2.py # Cópias de backup não devem ir pro git
