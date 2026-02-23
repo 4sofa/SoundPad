@@ -2,8 +2,8 @@
     "kill_switch": "x",
     "cor_tema": "Solar Yellow",
     "atalhos_sons": {},
-    "mic_device": "Microphone (SF-VOICE)",
-    "cable_device": "CABLE Input (VB-Audio Virtual Cable)",
+    "mic_device": "Mapeador de som da Microsoft - Input",
+    "cable_device": "Mapeador de som da Microsoft - Input",
     "phone_device": "Alto-falantes (Realtek(R) Audio",
     "atalho_parar": "x"
 }

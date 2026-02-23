@@ -1,8 +1,8 @@
 {
     "kill_switch": "x",
-    "cor_tema": "Solar Yellow",
+    "cor_tema": "Purple",
     "atalhos_sons": {},
     "mic_device": "Microphone (SF-VOICE)",
-    "cable_device": "CABLE Input (VB-Audio Virtual Cable)",
-    "phone_device": "Alto-falantes (Realtek(R) Audio)"
+    "cable_device": "CABLE Input (VB-Audio Virtual C",
+    "phone_device": "Alto-falantes (Realtek(R) Audio"
 }
