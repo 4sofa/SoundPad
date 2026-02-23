@@ -84,5 +84,5 @@ Projeto criado com carinho. Agradecimentos especiais às ferramentas utilizadas.
 
 ---
 <div align="center">
-  <sub>Criado por [Seu Nome/Usuário]</sub>
+  <sub>Criado por GustavoSOFA</sub>
 </div>
