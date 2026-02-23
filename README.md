@@ -78,7 +78,7 @@ Aqui você encontra soluções para os problemas mais frequentes.
 
 ## 🤝 Créditos
 
-Projeto criado com carinho. Agradecimentos especiais às ferramentas utilizadas.
+Projeto criado com carinho.
 
 <img src="https://github.com/user-attachments/assets/0e7e7449-8b45-448c-a18b-0b5e8230e703" width="600px">
 
