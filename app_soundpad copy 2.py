@@ -11,9 +11,13 @@ import re
 import ctypes
 import platform
 import webbrowser
+import sys
 
-# Initialize Eel with the 'web' folder
-eel.init('web')
+# Configure Eel to support PyInstaller _MEIPASS unpacking
+if hasattr(sys, '_MEIPASS'):
+    eel.init(os.path.join(sys._MEIPASS, 'web'))
+else:
+    eel.init('web')
 
 CONFIG_PATH = "config.json"
 config_data = {

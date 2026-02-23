@@ -1,7 +1,7 @@
 // Navigation
-function navigateTo(pageId, navItem) {
+function navigate(pageId, navItem) {
     document.querySelectorAll('.page').forEach(page => page.classList.remove('active-page'));
-    document.getElementById(pageId).classList.add('active-page');
+    document.getElementById('page-' + pageId).classList.add('active-page');
 
     document.querySelectorAll('.nav-item').forEach(nav => nav.classList.remove('active'));
     navItem.classList.add('active');
@@ -30,11 +30,12 @@ let isEngineOn = false;
 let allSounds = [];
 
 // Engine Toggle
-document.getElementById('engineToggle').addEventListener('click', function () {
+function toggleEngine() {
     isEngineOn = !isEngineOn;
-    this.classList.toggle('on');
+    const btn = document.getElementById('enginePill');
+    btn.classList.toggle('on');
 
-    const text = this.querySelector('.engine-text');
+    const text = document.getElementById('engineText');
     text.innerText = isEngineOn ? 'ENGINE ON' : 'ENGINE OFF';
 
     eel.toggle_engine(isEngineOn)();
@@ -44,7 +45,7 @@ document.getElementById('engineToggle').addEventListener('click', function () {
     } else {
         showToast("Engine Desligada.", "error");
     }
-});
+}
 
 // Load Sounds from Backend
 async function loadSounds() {
@@ -109,14 +110,14 @@ function openAddModal() {
 
 function closeAddModal() {
     document.getElementById('addModal').style.display = 'none';
-    document.getElementById('addLinkInput').value = '';
+    document.getElementById('myinstantsLink').value = '';
 }
 
-async function downloadSound() {
-    const link = document.getElementById('addLinkInput').value;
+async function downloadMyInstants() {
+    const link = document.getElementById('myinstantsLink').value;
     if (!link) return;
 
-    const btn = document.getElementById('downloadBtn');
+    const btn = document.querySelector('#addModal .btn-primary');
     const originalText = btn.innerText;
     btn.innerText = "Baixando...";
     btn.disabled = true;
@@ -171,11 +172,19 @@ function saveDevice(type, value) {
     showToast("Dispositivo alterado.", "success");
 }
 
+function toggleMicListen(enabled) {
+    showToast(enabled ? "Retorno Ligado (Requer reiniciar engine)" : "Retorno Desligado", enabled ? "success" : "error");
+}
+
 async function bindKillSwitch(btn) {
     btn.innerText = "Pressione...";
     btn.style.color = "var(--accent)";
-    const new_key = await eel.bind_killswitch()();
-    btn.innerText = new_key ? new_key.toUpperCase() : "NENHUM";
+    let new_key = await eel.bind_killswitch()();
+    if (new_key) {
+        btn.innerText = new_key.toUpperCase();
+    } else {
+        btn.innerText = "NENHUM";
+    }
     btn.style.color = "";
     showToast("Kill Switch atualizado!", "success");
 }
