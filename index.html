@@ -1,0 +1,210 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>SoundPad Ultimate</title>
+    <link rel="stylesheet" href="styles.css">
+    <script type="text/javascript" src="/eel.js"></script>
+</head>
+
+<body data-theme="Red">
+    <!-- Main Container -->
+    <div class="app-container">
+        <!-- Sidebar -->
+        <nav class="sidebar">
+            <div class="logo-area">
+                <svg width="30" height="30" viewBox="0 0 32 32" fill="none" xmlns="http://www.w3.org/2000/svg">
+                    <polygon points="4,4 20,10 4,26" fill="#fff" />
+                    <polygon points="12,4 28,10 12,26" stroke="#fff" stroke-width="2" fill="none" />
+                </svg>
+                <span>SoundPad</span>
+            </div>
+
+            <ul class="nav-links">
+                <li class="nav-item active" onclick="navigate('dashboard', this)">
+                    <div class="indicator"></div>
+                    <span class="icon">🏠</span>
+                    <span>Dashboard</span>
+                </li>
+                <li class="nav-item" onclick="navigate('settings', this)">
+                    <div class="indicator"></div>
+                    <span class="icon">⚙️</span>
+                    <span>Configurações</span>
+                </li>
+                <div class="spacer"></div>
+                <li class="nav-item" onclick="navigate('help', this)">
+                    <div class="indicator"></div>
+                    <span class="icon">❓</span>
+                    <span>Help</span>
+                </li>
+                <li class="nav-item" onclick="navigate('credits', this)">
+                    <div class="indicator"></div>
+                    <span class="icon">👤</span>
+                    <span>Créditos</span>
+                </li>
+            </ul>
+        </nav>
+
+        <!-- Main Content Area -->
+        <main class="content-area">
+            <!-- Header -->
+            <header class="topbar">
+                <!-- Engine Toggle Switch -->
+                <div class="engine-toggle-container" onclick="toggleEngine()">
+                    <div class="neon-pill" id="enginePill">
+                        <div class="neon-circle" id="engineCircle"></div>
+                        <span class="engine-text" id="engineText">ENGINE OFF</span>
+                    </div>
+                </div>
+
+                <!-- Search -->
+                <input type="text" id="searchInput" class="search-bar" placeholder="Buscar sons..."
+                    onkeyup="filterSounds()">
+
+                <!-- Help Button -->
+                <button class="btn-outline" onclick="navigate('help', document.querySelectorAll('.nav-item')[2])">✨ Como
+                    Usar</button>
+
+                <!-- Theme Selector -->
+                <select id="themeSelector" class="theme-select" onchange="changeTheme(this.value)">
+                    <option value="Red">Red</option>
+                    <option value="Purple">Purple</option>
+                    <option value="Cyberpunk Cyan">Cyberpunk Cyan</option>
+                    <option value="Solar Yellow">Solar Yellow</option>
+                    <option value="Midnight Blue">Midnight Blue</option>
+                </select>
+            </header>
+
+            <!-- Dashboard Page -->
+            <section id="page-dashboard" class="page active-page">
+                <div class="page-header">
+                    <h1>Dashboard <span class="subtitle">| Gerencie seus sons rápidos</span></h1>
+                    <button class="btn-primary" onclick="openAddModal()">+ Novo Som</button>
+                </div>
+                <div class="sounds-grid" id="soundsGrid">
+                    <!-- Cards will be injected here via JS -->
+                </div>
+            </section>
+
+            <!-- Settings Page -->
+            <section id="page-settings" class="page">
+                <h1>Hardware & Mixagem</h1>
+                <div class="settings-card">
+                    <div class="settings-col">
+                        <h2>Dispositivos</h2>
+
+                        <div class="input-group">
+                            <label>Microfone Principal (Input):</label>
+                            <select id="micSelect" onchange="saveDevice('mic', this.value)"></select>
+                        </div>
+
+                        <div class="input-group">
+                            <label>Cabo Virtual (Output para Discord):</label>
+                            <select id="cableSelect" onchange="saveDevice('cable', this.value)"></select>
+                        </div>
+
+                        <div class="input-group">
+                            <label>Seu Fone de Ouvido (Retorno):</label>
+                            <select id="phoneSelect" onchange="saveDevice('phone', this.value)"></select>
+                        </div>
+                    </div>
+
+                    <div class="settings-col border-left">
+                        <h2>Opções Úteis</h2>
+
+                        <div class="input-group">
+                            <label>Atalho de Emergência (Kill Switch):</label>
+                            <button class="btn-bind" id="killSwitchBtn" onclick="bindKillSwitch(this)">f12</button>
+                            <p class="hint">Para o áudio instantaneamente em caso de erro.</p>
+                        </div>
+
+                        <div class="checkbox-group">
+                            <input type="checkbox" id="micListenCheck" onchange="toggleMicListen(this.checked)">
+                            <label for="micListenCheck">🎤 Ouvir próprio Microfone (Retorno de Voz)</label>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Help/FAQ Page -->
+            <section id="page-help" class="page">
+                <h1>Central de Ajuda (FAQ)</h1>
+                <div class="faq-list">
+                    <div class="faq-card error">
+                        <h2>🎵 Ouvindo a Própria Voz ao Iniciar (Retorno)</h2>
+                        <p>Se você ligar a Engine e começar a ouvir sua própria voz (retorno infinito), ocorreu um
+                            pequeno bug no roteamento do Windows.</p>
+                        <div class="note">Como resolver: Na aba Configurações, troque seus 3 dispositivos (Microfone,
+                            Cabo Virtual e Fone) para QUALQUER outra opção aleatória da lista. Depois, volte-os para a
+                            opção correta. Feito isso, o áudio será destravado!</div>
+                    </div>
+
+                    <div class="faq-card warning">
+                        <h2>🎙️ Passo 1: Anti-Lag Discord</h2>
+                        <p>Siga estas configurações no Discord para o áudio sair vivo e sem cortes.</p>
+                        <div class="note">Desligue todos os filtros do Discord (Krisp, Eco, Supressão de Ruído) pois
+                            eles cortam 100% o áudio do SoundPad achando que é ruído!</div>
+                    </div>
+
+                    <div class="faq-card accent">
+                        <h2>🔌 Passo 2: Cabo Virtual (A Mágica)</h2>
+                        <p>Como o áudio vai do SoundPad para o Microfone do Discord?</p>
+                        <div class="note">1. Instale o 'VB-Audio Virtual Cable'.<br>2. Na aba Configurações do app,
+                            coloque 'Cabo Virtual' como CABLE Input.<br>3. Vá no Discord e coloque 'Dispositivo de
+                            Entrada' como CABLE Output.</div>
+                    </div>
+
+                    <div class="faq-card muted">
+                        <h2>📥 Passo 3: Adicionando Sons</h2>
+                        <p>Como usar o botão '+ Novo Som'?</p>
+                        <div class="note">Copie o link no MyInstants e cole na caixa de texto. O Soundpad fará o
+                            Download do MP3 direto para a pasta do aplicativo e ele aparecerá na lista automaticamente!
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Credits Page -->
+            <section id="page-credits" class="page">
+                <h1>Créditos & Desenvolvimento</h1>
+                <div class="credits-card">
+                    <div class="developer-info">
+                        <h2>Criador: <span class="accent-text">Gustavo Barreto Fogliati</span></h2>
+                        <p class="tagline">"Transformando áudio em diversão extrema de forma simples."</p>
+                    </div>
+                    <div class="social-links">
+                        <a href="#"
+                            onclick="eel.open_url('https://www.linkedin.com/in/gustavo-barreto-fogliati-46732b23b/')()"
+                            class="social-btn">🔗 LinkedIn</a>
+                        <a href="#" onclick="eel.open_url('https://github.com/4sofa/')()" class="social-btn">💻
+                            GitHub</a>
+                        <button class="social-btn outline" onclick="alert('Discord: SOFA#8304 copiado!')">🎮 Discord:
+                            SOFA#8304</button>
+                    </div>
+                </div>
+            </section>
+        </main>
+    </div>
+
+    <!-- Toast Container -->
+    <div id="toastContainer" class="toast-container"></div>
+
+    <!-- Add Sound Modal -->
+    <div id="addModal" class="modal-overlay">
+        <div class="modal">
+            <h2>Adicionar Som</h2>
+            <p>Cole o link do MyInstants para baixar o áudio:</p>
+            <input type="text" id="myinstantsLink" class="input-field" placeholder="https://www.myinstants.com/...">
+            <div class="modal-actions">
+                <button class="btn-text" onclick="closeAddModal()">Cancelar</button>
+                <button class="btn-primary" onclick="downloadMyInstants()">Baixar</button>
+            </div>
+        </div>
+    </div>
+
+    <script src="script.js"></script>
+</body>
+
+</html>
